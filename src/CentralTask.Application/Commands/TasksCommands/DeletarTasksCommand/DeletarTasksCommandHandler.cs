@@ -20,6 +20,12 @@ namespace CentralTask.Application.Commands.TasksCommands
         {
             var entidade = _tasksRepository.Get().FirstOrDefault(c => c.Id == request.Id);
 
+            if (entidade == null)
+            {
+                _notifier.Notify("A tarefa informada não foi encontrada.");
+                return new();
+            }
+
             _tasksRepository.Remove(entidade);
             await _tasksRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 

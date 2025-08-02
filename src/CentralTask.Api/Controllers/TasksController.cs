@@ -40,13 +40,6 @@ public class TasksController : BaseController
         return HandleResult(await _mediator.Send(input));
     }
 
-    [HttpPut("status")]
-    //[Authorize]
-    public async Task<IActionResult> AtualizarStatusTasks([FromBody] AtualizarStatusTasksCommandInput input)
-    {
-        return HandleResult(await _mediator.Send(input));
-    }
-
     [HttpGet("by-id")]
     //[Authorize]
     public async Task<IActionResult> GetByIdTasks([FromQuery] GetByIdTasksInput input)

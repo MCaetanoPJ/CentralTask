@@ -26,6 +26,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CentralTask.Infra.Data", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CentralTask.Domain", "src\CentralTask.Domain\CentralTask.Domain.csproj", "{B72E520A-EF66-4B77-87D7-56544F8AB421}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.2 - Broker", "4.2 - Broker", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CentralTask.Broker", "src\CentralTask.Broker\CentralTask.Broker.csproj", "{B0AA6BF8-C3BD-CE27-7BFF-AF1377A98B47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +60,10 @@ Global
 		{B72E520A-EF66-4B77-87D7-56544F8AB421}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B72E520A-EF66-4B77-87D7-56544F8AB421}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B72E520A-EF66-4B77-87D7-56544F8AB421}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0AA6BF8-C3BD-CE27-7BFF-AF1377A98B47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0AA6BF8-C3BD-CE27-7BFF-AF1377A98B47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0AA6BF8-C3BD-CE27-7BFF-AF1377A98B47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0AA6BF8-C3BD-CE27-7BFF-AF1377A98B47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +76,8 @@ Global
 		{47629318-58B0-479E-ACFD-15838BD8D31A} = {7B7E9459-F417-47CA-A2B6-BB09956D10AA}
 		{6A2D47B2-9F1D-4706-9C15-D5697B465663} = {6F7B8089-7A39-4C42-9955-4399553FBE01}
 		{B72E520A-EF66-4B77-87D7-56544F8AB421} = {C4BD99F6-72BE-4B3C-A573-C282A9964CC2}
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {2D83DA9F-5E6C-498D-9423-3ACF1DB9A11B}
+		{B0AA6BF8-C3BD-CE27-7BFF-AF1377A98B47} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {992C52AC-8207-4563-B9D9-ADEB72F6DBFD}

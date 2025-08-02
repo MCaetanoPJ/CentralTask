@@ -9,29 +9,49 @@ namespace CentralTask.Application.Commands.TasksCommands
     public class AlterarTasksCommandHandler : ICommandHandler<AlterarTasksCommandInput, AlterarTasksCommandResult>
     {
         private readonly ITasksRepository _tasksRepository;
+        private readonly IUserRepository _userRepository;
         private readonly INotifier _notifier;
 
-        public AlterarTasksCommandHandler(ITasksRepository tasksRepository, INotifier notifier)
+        public AlterarTasksCommandHandler(ITasksRepository tasksRepository, INotifier notifier, IUserRepository userRepository)
         {
             _tasksRepository = tasksRepository;
             _notifier = notifier;
+            _userRepository = userRepository;
         }
 
         public async Task<AlterarTasksCommandResult> Handle(AlterarTasksCommandInput request, CancellationToken cancellationToken)
         {
-            var entidade = new Tasks
+            if (string.IsNullOrEmpty(request.Title))
             {
-                Title = request.Title,
-                Description = request.Description,
-                DueDate = request.DueDate,
-                UserId = request.UserId,
-            };
+                _notifier.Notify("O título da tarefa é obrigatório.");
+                return new();
+            }
 
-            _tasksRepository.Update(entidade);
+            if (string.IsNullOrEmpty(request.Description))
+            {
+                _notifier.Notify("A descrição da tarefa é obrigatório.");
+                return new();
+            }
+
+            var user = _userRepository.GetAsNoTracking().FirstOrDefault(u => u.Id == request.UserId);
+            if (user == null)
+            {
+                _notifier.Notify("O usuário informado não foi encontrado.");
+                return new();
+            }
+
+            var taskBd = await _tasksRepository.GetByIdAsync(request.Id);
+            taskBd.Description = request.Description;
+            taskBd.DueDate = request.DueDate;
+            taskBd.Status = request.Status;
+            taskBd.UserId = request.UserId;
+            taskBd.Title = request.Title;
+
+            _tasksRepository.Update(taskBd);
 
             await _tasksRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
-            return new AlterarTasksCommandResult { Id = entidade.Id };
+            return new AlterarTasksCommandResult { Id = taskBd.Id };
         }
     }
 }

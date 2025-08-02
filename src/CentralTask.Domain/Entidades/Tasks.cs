@@ -1,5 +1,6 @@
 
 using CentralTask.Domain.Entidades.Base;
+using CentralTask.Domain.Enums;
 
 namespace CentralTask.Domain.Entidades
 {
@@ -7,7 +8,7 @@ namespace CentralTask.Domain.Entidades
     {
         public Tasks() { }
 
-        public Tasks(string title, string description, DateTime dueDate, Guid userId, DateTime createdAt, User user)
+        public Tasks(string title, string description, DateTime dueDate, Guid userId, User user)
         {
             Title = title;
             Description = description;
@@ -18,6 +19,7 @@ namespace CentralTask.Domain.Entidades
 
         public string Title { get; set; }
         public string Description { get; set; }
+        public StatusTask Status { get; set; }
         public DateTime DueDate { get; set; }
         public Guid UserId { get; set; }
         public User User { get; set; }

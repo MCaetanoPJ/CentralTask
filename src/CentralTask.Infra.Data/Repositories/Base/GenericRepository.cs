@@ -38,5 +38,5 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity>
     public void RemoveRange(List<TEntity> entity) => _context.RemoveRange(entity);
 
     public bool Existe(Guid id) => GetAsNoTracking().Any(c => c.Id == id);
-    public bool ExisteAtivo(Guid id) => GetAsNoTracking().Any(c => c.Id == id && c.Status == Status.Ativo);
+    public bool ExisteAtivo(Guid id) => GetAsNoTracking().Any(c => c.Id == id && c.Active == Status.Ativo);
 }

@@ -8,22 +8,22 @@ public abstract class Entidade : IEntidade
     {
         Id = Guid.NewGuid();
         CreatedAt = DateTime.Now;
-        Status = Status.Ativo;
+        Active = Status.Ativo;
     }
     public Guid Id { get; set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; set; }
-    public Status Status { get; set; }
+    public Status Active { get; set; }
 
     public void AtivarInativar()
     {
-        if (Status == Status.Ativo)
+        if (Active == Status.Ativo)
         {
-            Status = Status.Inativo;
+            Active = Status.Inativo;
         }
-        else if (Status == Status.Inativo)
+        else if (Active == Status.Inativo)
         {
-            Status = Status.Ativo;
+            Active = Status.Ativo;
         }
     }
 }

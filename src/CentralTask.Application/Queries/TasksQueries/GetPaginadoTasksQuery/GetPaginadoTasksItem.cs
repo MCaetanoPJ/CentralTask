@@ -1,12 +1,15 @@
 
+using CentralTask.Domain.Enums;
+
 namespace CentralTask.Application.Queries.TasksQueries
 {
     public class GetPaginadoTasksItem
     {
+        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public DateTime Duedate { get; set; }
-        public Guid Userid { get; set; }
-        public DateTime Createdat { get; set; }
+        public DateTime DueDate { get; set; }
+        public Guid UserId { get; set; }
+        public StatusTask Status { get; set; }
     }
 }

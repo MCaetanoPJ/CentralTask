@@ -26,7 +26,7 @@ public class ObterUserByIdQueryHandler : ICommandHandler<ObterUserByIdQueryInput
                 UserId = result.Id,
                 NomeCompleto = result.Nome,
                 Email = result.Email,
-                Status = (int)result.Status,
+                Status = (int)result.Active,
                 NivelAcesso = (int)result.NivelAcesso,
 
             };

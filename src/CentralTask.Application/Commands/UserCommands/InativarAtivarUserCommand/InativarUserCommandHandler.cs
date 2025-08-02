@@ -37,10 +37,10 @@ public class InativarUserCommandHandler : ICommandHandler<InativarUserCommandInp
 
         if (inativarUser != null)
         {
-            if (inativarUser.Status == Status.Ativo)
-                inativarUser.Status = Status.Inativo;
+            if (inativarUser.Active == Status.Ativo)
+                inativarUser.Active = Status.Inativo;
             else
-                inativarUser.Status = Status.Ativo;
+                inativarUser.Active = Status.Ativo;
 
             _UserRepository.Update(inativarUser);
 

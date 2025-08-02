@@ -26,7 +26,7 @@ public class ObterUsersQueryPaginatedHandler : IQueryHandler<ObterUsersQueryPagi
                 Id = x.Id,
                 NomeCompleto = x.Nome,
                 Email = x.Email,
-                Status = (int)x.Status
+                Status = (int)x.Active
             })
             .PaginateAsync(request.PageNumber, request.PageSize, cancellationToken);
 

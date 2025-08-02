@@ -5,6 +5,6 @@ namespace CentralTask.Domain.Entidades.Base;
 public interface IEntidade
 {
     public Guid Id { get; set; }
-    public Status Status { get; set; }
+    public Status Active { get; set; }
 
 }

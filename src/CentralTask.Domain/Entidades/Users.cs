@@ -20,6 +20,6 @@ public class User : IdentityUser<Guid>, IEntidade
     }
 
     public string Nome { get; set; }
-    public Status Status { get; set; }
+    public Status Active { get; set; }
     public EnumNivel NivelAcesso { get; set; }
 }

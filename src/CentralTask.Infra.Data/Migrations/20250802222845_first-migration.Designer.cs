@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CentralTask.Infra.Data.Migrations
 {
     [DbContext(typeof(CentralTaskContext))]
-    [Migration("20250802192609_first-migration")]
+    [Migration("20250802222845_first-migration")]
     partial class firstmigration
     {
         /// <inheritdoc />
@@ -29,6 +29,9 @@ namespace CentralTask.Infra.Data.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
+
+                    b.Property<int>("Active")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
@@ -64,6 +67,9 @@ namespace CentralTask.Infra.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<int>("AccessFailedCount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Active")
                         .HasColumnType("integer");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -111,9 +117,6 @@ namespace CentralTask.Infra.Data.Migrations
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");

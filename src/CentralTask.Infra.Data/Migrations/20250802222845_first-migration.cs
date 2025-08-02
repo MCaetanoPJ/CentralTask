@@ -36,7 +36,7 @@ namespace CentralTask.Infra.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Nome = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
+                    Active = table.Column<int>(type: "integer", nullable: false),
                     NivelAcesso = table.Column<int>(type: "integer", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -176,11 +176,12 @@ namespace CentralTask.Infra.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
+                    Status = table.Column<int>(type: "integer", nullable: false),
                     DueDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    Status = table.Column<int>(type: "integer", nullable: false)
+                    Active = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

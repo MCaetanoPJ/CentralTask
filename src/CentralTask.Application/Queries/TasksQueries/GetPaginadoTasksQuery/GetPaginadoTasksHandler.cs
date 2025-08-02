@@ -20,10 +20,12 @@ namespace CentralTask.Application.Queries.TasksQueries
             var (result, pagination) = await query
                 .Select(x => new GetPaginadoTasksItem
                 {
+                    Id = x.Id,
                     Title = x.Title,
                     Description = x.Description,
-                    Duedate = x.DueDate,
-                    Userid = x.UserId
+                    DueDate = x.DueDate,
+                    UserId = x.UserId,
+                    Status = x.Status
                 })
                 .PaginateAsync(request.PageNumber, request.PageSize, cancellationToken);
 
