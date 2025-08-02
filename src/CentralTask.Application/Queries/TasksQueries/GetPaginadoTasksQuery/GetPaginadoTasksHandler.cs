@@ -25,7 +25,7 @@ namespace CentralTask.Application.Queries.TasksQueries
                     Description = x.Description,
                     DueDate = x.DueDate,
                     UserId = x.UserId,
-                    Status = x.Status
+                    Status = (int)x.Status
                 })
                 .PaginateAsync(request.PageNumber, request.PageSize, cancellationToken);
 

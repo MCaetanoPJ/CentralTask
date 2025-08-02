@@ -31,7 +31,7 @@ namespace CentralTask.Application.Queries.TasksQueries
                     DueDate = result.DueDate,
                     UserId = result.UserId,
                     CreatedAt = result.CreatedAt,
-                    Status = result.Status
+                    Status = (int)result.Status
                 }
             };
         }
