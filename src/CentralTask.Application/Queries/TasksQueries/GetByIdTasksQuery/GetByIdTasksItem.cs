@@ -1,6 +1,3 @@
-
-using CentralTask.Domain.Enums;
-
 namespace CentralTask.Application.Queries.TasksQueries
 {
     public class GetByIdTasksItem
