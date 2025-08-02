@@ -63,23 +63,11 @@ public class RealizarLoginCommandHandler : ICommandHandler<RealizarLoginCommandI
             return new RealizarLoginCommandResult();
         }
 
-        var User = _UserRepository.Get().Where(x => x.Email.ToLower().Trim() == email).FirstOrDefault();
+        var user = _UserRepository.Get().Where(x => x.Email.ToLower().Trim() == email).FirstOrDefault();
 
-        if (User != null)
-        {
-            if (User.Status != Status.Ativo)
-            {
-                _notifier.Notify("Usuário não cadastrado.");
-                return new RealizarLoginCommandResult();
-            }
-        }
+        _logger.LogInformation("Usuário {UserId} logado com sucesso.", user.Id);
 
-        _UserRepository.Update(User);
-        await _UserRepository.UnitOfWork.SaveChangesAsync();
-
-        _logger.LogInformation("Usuário {UserId} logado com sucesso.", User.Id);
-
-        return await GerarReponseComToken(User);
+        return await GerarReponseComToken(user);
     }
 
     public async Task<RealizarLoginCommandResult> GerarReponseComToken(User User)
