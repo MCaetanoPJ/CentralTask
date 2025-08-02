@@ -1,7 +1,6 @@
 
 using CentralTask.Core.Mediator.Commands;
 using CentralTask.Core.Notifications;
-using CentralTask.Domain.Entidades;
 using CentralTask.Domain.Interfaces.Repositories;
 
 namespace CentralTask.Application.Commands.TasksCommands

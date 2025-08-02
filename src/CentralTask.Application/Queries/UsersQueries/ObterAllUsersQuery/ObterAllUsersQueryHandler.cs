@@ -17,15 +17,17 @@ public class ObterTodosUsersQueryHandler
         _UserRepository = UserRepository;
         _mapper = mapper;
     }
-    public Task<QueryListResult<ObterTodosUsersQueryItem>>
-        Handle(GetAllUserQueryInput request, CancellationToken cancellationToken)
+    public Task<QueryListResult<ObterTodosUsersQueryItem>>Handle(GetAllUserQueryInput request, CancellationToken cancellationToken)
     {
-        var Users = _mapper.Map<List<ObterTodosUsersQueryItem>>
-            (_UserRepository.GetAsNoTracking().ToList());
+        var listUsers = _UserRepository.GetAsNoTracking().ToList().Select(c => new ObterTodosUsersQueryItem
+        {
+            Id = c.Id,
+            Nome = c.Nome,
+        });
 
         return Task.FromResult(new QueryListResult<ObterTodosUsersQueryItem>
         {
-            Result = Users
+            Result = listUsers
         });
     }
 }
