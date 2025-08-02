@@ -7,8 +7,7 @@ namespace CentralTask.Application.Commands.TasksCommands
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public DateTime Duedate { get; set; }
-        public Guid Userid { get; set; }
-        public DateTime Createdat { get; set; }
+        public DateTime DueDate { get; set; }
+        public Guid UserId { get; set; }
     }
 }

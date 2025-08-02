@@ -23,9 +23,9 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity>
 
     public IQueryable<TEntity> GetAsNoTracking() => Get().AsNoTracking();
 
-	public async Task<TEntity> GetByIdAsync(Guid id) => await Get().AsNoTracking().SingleOrDefaultAsync(c => c.Id == id);
+    public async Task<TEntity> GetByIdAsync(Guid id) => await Get().AsNoTracking().SingleOrDefaultAsync(c => c.Id == id);
 
-	public void Add(TEntity entity) => _context.Add(entity);
+    public void Add(TEntity entity) => _context.Add(entity);
 
     public void Update(TEntity entity) => _context.Entry(entity).State = EntityState.Modified;
 

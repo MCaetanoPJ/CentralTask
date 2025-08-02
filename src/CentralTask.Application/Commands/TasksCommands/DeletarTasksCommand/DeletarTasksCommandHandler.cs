@@ -1,11 +1,7 @@
 
-using CentralTask.Domain.Interfaces.Repositories;
 using CentralTask.Core.Mediator.Commands;
 using CentralTask.Core.Notifications;
-using CentralTask.Domain.Entidades;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using CentralTask.Domain.Interfaces.Repositories;
 
 namespace CentralTask.Application.Commands.TasksCommands
 {
@@ -23,7 +19,7 @@ namespace CentralTask.Application.Commands.TasksCommands
         public async Task<DeletarTasksCommandResult> Handle(DeletarTasksCommandInput request, CancellationToken cancellationToken)
         {
             var entidade = _tasksRepository.Get().FirstOrDefault(c => c.Id == request.Id);
-            
+
             _tasksRepository.Remove(entidade);
             await _tasksRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 

@@ -1,7 +1,5 @@
 
 using CentralTask.Domain.Entidades.Base;
-using System;
-using System.Collections.Generic;
 
 namespace CentralTask.Domain.Entidades
 {
@@ -9,21 +7,19 @@ namespace CentralTask.Domain.Entidades
     {
         public Tasks() { }
 
-        public Tasks(string title, string description, DateTime duedate, Guid userid, DateTime createdat, Users users)
+        public Tasks(string title, string description, DateTime dueDate, Guid userId, DateTime createdAt, User user)
         {
-        Title = title;
-        Description = description;
-        Duedate = duedate;
-        Userid = userid;
-        Createdat = createdat;
-        Users = users;
+            Title = title;
+            Description = description;
+            DueDate = dueDate;
+            UserId = userId;
+            User = user;
         }
 
-    public string Title { get; set; }
-    public string Description { get; set; }
-    public DateTime Duedate { get; set; }
-    public Guid Userid { get; set; }
-    public DateTime Createdat { get; set; }
-    public Users Users { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public DateTime DueDate { get; set; }
+        public Guid UserId { get; set; }
+        public User User { get; set; }
     }
 }

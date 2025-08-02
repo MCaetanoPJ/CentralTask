@@ -1,9 +1,9 @@
-using System.Reflection;
 using CentralTask.Core.Mediator.Pipelines;
 using CentralTask.Core.Notifications;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace CentralTask.Core;
 

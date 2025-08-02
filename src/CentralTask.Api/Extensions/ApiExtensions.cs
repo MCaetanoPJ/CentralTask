@@ -1,11 +1,10 @@
-using CentralTask.Api.Extensions;
 using CentralTask.Application;
 using CentralTask.Core;
+using CentralTask.Core.AppSettingsConfigurations;
 using CentralTask.Core.Middlewares;
 using CentralTask.Core.Settings;
 using CentralTask.DI;
 using CentralTask.Infra.Data.Context;
-using CentralTask.Core.AppSettingsConfigurations;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Converters;
 using Serilog;
@@ -26,7 +25,7 @@ public static class ApiExtensions
         var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
 
         if (jwtSettings is null) throw new Exception("Configuração SMPT necessária");
-        
+
         services
             .AddSwaggerConfiguration()
             .AddIdentityConfiguration()
@@ -53,10 +52,6 @@ public static class ApiExtensions
 
             migrator.Migrate().Wait();
         }
-
-        //var seeder = app.Services.GetRequiredService<Seeder>();
-
-        //seeder.Seed().Wait();
 
         app.UseRouting();
 

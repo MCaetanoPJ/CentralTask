@@ -17,7 +17,7 @@ public static class HttpContextExtensions
         return httpContext.User.Identity is { IsAuthenticated: true };
     }
 
-    public static string? ObterUsuarioId(this HttpContext httpContext)
+    public static string? ObterUserId(this HttpContext httpContext)
     {
         var claim = httpContext?.User?.FindFirst(ClaimTypes.NameIdentifier);
         return claim?.Value;
@@ -28,7 +28,8 @@ public static class HttpContextExtensions
         if (!httpContext.EstaAutenticado())
         {
             return null;
-        };
+        }
+        ;
 
         var token = httpContext.Request.Headers[HeaderNames.Authorization].ToString();
         token = token.Replace("Bearer", string.Empty).Trim();

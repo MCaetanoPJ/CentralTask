@@ -8,7 +8,7 @@ public static class IdentityServicesExtensions
 {
     public static IServiceCollection AddIdentityConfiguration(this IServiceCollection services)
     {
-        services.AddIdentity<Usuario, IdentityRole<Guid>>(config =>
+        services.AddIdentity<User, IdentityRole<Guid>>(config =>
         {
             config.User.RequireUniqueEmail = false;
             config.Password.RequiredLength = 6;
@@ -33,7 +33,7 @@ public static class IdentityServicesExtensions
         public override IdentityError InvalidToken() { return new IdentityError { Code = nameof(InvalidToken), Description = "Token inválido." }; }
         public override IdentityError LoginAlreadyAssociated() { return new IdentityError { Code = nameof(LoginAlreadyAssociated), Description = "Já existe um usuário com este login." }; }
         public override IdentityError InvalidUserName(string userName) { return new IdentityError { Code = nameof(InvalidUserName), Description = $"Login '{userName}' é inválido, deve conter apenas letras ou dígitos." }; }
-        public override IdentityError InvalidEmail(string email) { return new IdentityError { Code = nameof(InvalidEmail), Description = $"E-mail ou senha incorretos."}; }
+        public override IdentityError InvalidEmail(string email) { return new IdentityError { Code = nameof(InvalidEmail), Description = $"E-mail ou senha incorretos." }; }
         public override IdentityError DuplicateUserName(string userName) { return new IdentityError { Code = nameof(DuplicateUserName), Description = $"Login '{userName}' já está sendo utilizado." }; }
         public override IdentityError DuplicateEmail(string email) { return new IdentityError { Code = nameof(DuplicateEmail), Description = $"Email '{email}' já está sendo utilizado." }; }
         public override IdentityError InvalidRoleName(string role) { return new IdentityError { Code = nameof(InvalidRoleName), Description = $"A permissão '{role}' é inválida." }; }

@@ -1,25 +1,25 @@
-
 using CentralTask.Domain.Entidades.Base;
-using System;
-using System.Collections.Generic;
+using CentralTask.Domain.Enums;
+using Microsoft.AspNetCore.Identity;
 
-namespace CentralTask.Domain.Entidades
+namespace CentralTask.Domain.Entidades;
+
+public class User : IdentityUser<Guid>, IEntidade
 {
-    public class Users : Entidade
+    public User(string nome, string email)
     {
-        public Users() { }
+        ArgumentNullException.ThrowIfNull(nome);
 
-        public Users(string username, string email, string passwordhash, DateTime createdat)
-        {
-        Username = username;
-        Email = email;
-        Passwordhash = passwordhash;
-        Createdat = createdat;
-        }
-
-    public string Username { get; set; }
-    public string Email { get; set; }
-    public string Passwordhash { get; set; }
-    public DateTime Createdat { get; set; }
+        Id = Guid.NewGuid();
+        Nome = nome;
+        Email = UserName = email.ToLower().Trim();
     }
+
+    public User()
+    {
+    }
+
+    public string Nome { get; set; }
+    public Status Status { get; set; }
+    public EnumNivel NivelAcesso { get; set; }
 }

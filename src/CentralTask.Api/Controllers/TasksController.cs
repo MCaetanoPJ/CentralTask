@@ -1,9 +1,9 @@
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using CentralTask.Core.Mvc;
-using Microsoft.AspNetCore.Authorization;
 using CentralTask.Application.Commands.TasksCommands;
 using CentralTask.Application.Queries.TasksQueries;
+using CentralTask.Core.Mvc;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CentralTask.Api.Controllers;
 
@@ -60,5 +60,4 @@ public class TasksController : BaseController
     {
         return HandleResult(await _mediator.Send(input));
     }
-
 }

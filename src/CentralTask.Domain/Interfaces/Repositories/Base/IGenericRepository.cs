@@ -1,5 +1,4 @@
 using CentralTask.Domain.Entidades.Base;
-using Microsoft.EntityFrameworkCore;
 
 namespace CentralTask.Domain.Interfaces.Repositories.Base;
 
@@ -10,8 +9,8 @@ public interface IGenericRepository<TEntity> where TEntity : class, IEntidade
     void AddRange(List<TEntity> entity);
     IQueryable<TEntity> Get();
     IQueryable<TEntity> GetAsNoTracking();
-	Task<TEntity> GetByIdAsync(Guid id);
-	void Update(TEntity entity);
+    Task<TEntity> GetByIdAsync(Guid id);
+    void Update(TEntity entity);
     void UpdateRange(List<TEntity> entity);
     void Remove(TEntity entity);
     void RemoveRange(List<TEntity> entity);

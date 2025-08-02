@@ -2,7 +2,7 @@ using CentralTask.Core.RepositoryBase;
 
 namespace CentralTask.Application.Services.Interfaces;
 
-public interface IUSuarioService
+public interface IUserService
 {
-    Task<ValidateResult> DeletarUsuario(Guid usuarioId);
+    Task<ValidateResult> DeletarUser(Guid UserId);
 }

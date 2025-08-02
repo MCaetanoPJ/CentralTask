@@ -1,4 +1,3 @@
-
 using CentralTask.Domain.Entidades;
 using CentralTask.Infra.Data.Mapping.Base;
 using Microsoft.EntityFrameworkCore;
@@ -13,11 +12,10 @@ namespace CentralTask.Infra.Data.Mapping
             base.Configure(builder);
             builder.ToTable(ConstantesInfra.Tabelas.Tasks, ConstantesInfra.Schemas.Public);
             builder.HasKey(e => e.Id);
-            
-            builder.HasOne(x => x.Users)
-            .WithMany()
-            .HasForeignKey(x => x.Userid);
 
+            builder.HasOne(x => x.User)
+            .WithMany()
+            .HasForeignKey(x => x.UserId);
         }
     }
 }

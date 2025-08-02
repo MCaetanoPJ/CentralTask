@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Http;
 
 namespace CentralTask.Application.Identidade;
 
-public class UsuarioLogado : IUsuarioLogado
+public class UserLogado : IUserLogado
 {
     private readonly IHttpContextAccessor _acessor;
 
-    public UsuarioLogado(IHttpContextAccessor acessor)
+    public UserLogado(IHttpContextAccessor acessor)
     {
         _acessor = acessor;
     }
@@ -25,7 +25,7 @@ public class UsuarioLogado : IUsuarioLogado
 
     public Guid? ObterId()
     {
-        return Guid.TryParse(_acessor.HttpContext.ObterUsuarioId(), out var guidId)
+        return Guid.TryParse(_acessor.HttpContext.ObterUserId(), out var guidId)
             ? guidId
             : null;
     }

@@ -1,11 +1,8 @@
 
-using CentralTask.Domain.Interfaces.Repositories;
 using CentralTask.Core.Mediator.Commands;
 using CentralTask.Core.Notifications;
 using CentralTask.Domain.Entidades;
-using CentralTask.Core.Extensions;
-using System.Threading;
-using System.Threading.Tasks;
+using CentralTask.Domain.Interfaces.Repositories;
 
 namespace CentralTask.Application.Commands.TasksCommands
 {
@@ -26,13 +23,11 @@ namespace CentralTask.Application.Commands.TasksCommands
             {
                 Title = request.Title,
                 Description = request.Description,
-                Duedate = request.Duedate,
-                Userid = request.Userid,
-                Createdat = request.Createdat,
-
+                DueDate = request.DueDate,
+                UserId = request.UserId,
             };
 
-              _tasksRepository.Update(entidade);
+            _tasksRepository.Update(entidade);
 
             await _tasksRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 

@@ -1,8 +1,8 @@
 
-using CentralTask.Infra.Data.Context;
-using CentralTask.Infra.Data.Repositories.Base;
 using CentralTask.Domain.Entidades;
 using CentralTask.Domain.Interfaces.Repositories;
+using CentralTask.Infra.Data.Context;
+using CentralTask.Infra.Data.Repositories.Base;
 
 namespace CentralTask.Infra.Data.Repositories
 {

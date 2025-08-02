@@ -1,8 +1,6 @@
 
 using CentralTask.Core.Mediator.Queries;
 using CentralTask.Domain.Interfaces.Repositories;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace CentralTask.Application.Queries.TasksQueries
@@ -30,9 +28,9 @@ namespace CentralTask.Application.Queries.TasksQueries
                 {
                     Title = result.Title,
                     Description = result.Description,
-                    Duedate = result.Duedate,
-                    Userid = result.Userid,
-                    Createdat = result.Createdat
+                    Duedate = result.DueDate,
+                    Userid = result.UserId,
+                    Createdat = result.CreatedAt
                 }
             };
         }

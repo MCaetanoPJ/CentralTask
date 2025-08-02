@@ -1,10 +1,10 @@
-using System.Text;
-using CentralTask.Core.Settings;
 using CentralTask.Core.AppSettingsConfigurations;
+using CentralTask.Core.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using System.Text;
 
 namespace CentralTask.Api.Extensions;
 
@@ -50,7 +50,7 @@ public static class JwtExtensions
                         var reqUser = credentials[0];
                         var reqPass = credentials.Length > 1 ? credentials[1] : string.Empty;
 
-                        if (reqUser == configSwagger?.Usuario && reqPass == configSwagger?.Senha)
+                        if (reqUser == configSwagger?.User && reqPass == configSwagger?.Senha)
                         {
                             await next();
                             return;

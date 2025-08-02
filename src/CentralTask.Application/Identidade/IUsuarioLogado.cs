@@ -1,9 +1,8 @@
-using CentralTask.Domain.Entidades;
 using CentralTask.Domain.Enums;
 
 namespace CentralTask.Application.Identidade;
 
-public interface IUsuarioLogado
+public interface IUserLogado
 {
     bool EstaLogado();
     Guid? ObterId();

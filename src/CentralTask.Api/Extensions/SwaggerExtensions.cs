@@ -31,7 +31,7 @@ public static class SwaggerExtensions
                 }
             });
         });
-        
+
         services.AddApiVersioning(p =>
         {
             p.DefaultApiVersion = new ApiVersion(1, 0);

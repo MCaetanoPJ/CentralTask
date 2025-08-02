@@ -1,14 +1,14 @@
 using CentralTask.Application.AutoMapper;
+using CentralTask.Application.Identidade;
+using CentralTask.Application.Services;
+using CentralTask.Application.Services.Interfaces;
 using CentralTask.Domain.Interfaces.Repositories;
+using CentralTask.Infra.Data.Context;
+using CentralTask.Infra.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Globalization;
-using CentralTask.Application.Services.Interfaces;
-using CentralTask.Application.Services;
-using CentralTask.Application.Identidade;
-using CentralTask.Infra.Data.Repositories;
-using CentralTask.Infra.Data.Context;
-using Microsoft.EntityFrameworkCore;
 
 namespace CentralTask.DI;
 
@@ -19,7 +19,7 @@ public static class DependencyInjector
         services
             .AddHttpContextAccessor()
             .AddSingleton<Migrator>()
-            .AddScoped<IUsuarioLogado, UsuarioLogado>()
+            .AddScoped<IUserLogado, UserLogado>()
             .AddRepositories()
             .AddSharedServices()
             .AddAutoMapper(typeof(AutoMapperConfig))
@@ -62,16 +62,16 @@ public static class DependencyInjector
 
     private static IServiceCollection AddSharedServices(this IServiceCollection services)
     {
-        services.AddScoped<IUSuarioService, UsuarioService>();
+        services.AddScoped<IUserService, UserService>();
 
         return services;
     }
 
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
-        services.AddScoped<IUsuarioRepository, UsuarioRepository>();        
+        services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ITasksRepository, TasksRepository>();
-        services.AddScoped<IUsersRepository, UsersRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
         return services;
     }
 

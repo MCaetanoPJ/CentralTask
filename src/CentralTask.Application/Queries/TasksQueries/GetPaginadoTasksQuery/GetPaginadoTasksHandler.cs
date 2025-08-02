@@ -1,11 +1,6 @@
-
 using CentralTask.Core.Extensions;
 using CentralTask.Core.Mediator.Queries;
 using CentralTask.Domain.Interfaces.Repositories;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace CentralTask.Application.Queries.TasksQueries
 {
@@ -27,9 +22,8 @@ namespace CentralTask.Application.Queries.TasksQueries
                 {
                     Title = x.Title,
                     Description = x.Description,
-                    Duedate = x.Duedate,
-                    Userid = x.Userid,
-                    Createdat = x.Createdat
+                    Duedate = x.DueDate,
+                    Userid = x.UserId
                 })
                 .PaginateAsync(request.PageNumber, request.PageSize, cancellationToken);
 
