@@ -33,6 +33,13 @@ namespace CentralTask.Application.Commands.TasksCommands
                 return new();
             }
 
+            var taskBd = await _tasksRepository.GetByIdAsync(request.Id);
+            if (taskBd == null)
+            {
+                _notifier.Notify("A tarefa não foi encontrada.");
+                return new();
+            }
+
             var user = _userRepository.GetAsNoTracking().FirstOrDefault(u => u.Id == request.UserId);
             if (user == null)
             {
@@ -40,7 +47,6 @@ namespace CentralTask.Application.Commands.TasksCommands
                 return new();
             }
 
-            var taskBd = await _tasksRepository.GetByIdAsync(request.Id);
             taskBd.Description = request.Description;
             taskBd.DueDate = request.DueDate;
             taskBd.Status = request.Status;
