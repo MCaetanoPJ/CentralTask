@@ -1,19 +1,21 @@
-﻿using CentralTask.Core.DTO.Worker;
+﻿using CentralTask.Broker.Connection;
+using CentralTask.Broker.Interfaces;
+using CentralTask.Core.DTO.Broker;
 using CentralTask.Core.RepositoryBase;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
 
-namespace CentralTask.Broker
+namespace CentralTask.Broker.Producer
 {
-    public class EventPublisher
+    public class EventPublisher : IEventPublisher
     {
-        private readonly EventConnection _connection;
+        private readonly IEventConnection _connection;
         private readonly ILogger<EventPublisher> _logger;
         private const int MaxRetries = 3;
 
-        public EventPublisher(EventConnection connection, ILogger<EventPublisher> logger)
+        public EventPublisher(IEventConnection connection, ILogger<EventPublisher> logger)
         {
             _connection = connection;
             _logger = logger;

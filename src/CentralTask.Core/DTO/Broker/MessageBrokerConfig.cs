@@ -1,6 +1,6 @@
-namespace CentralTask.Core.DTO.Worker
+namespace CentralTask.Core.DTO.Broker
 {
-    public class MessageBrokerConfig
+    public class QueueEvent
     {
         public string Host { get; set; }
         public int Port { get; set; }

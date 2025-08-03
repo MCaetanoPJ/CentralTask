@@ -2,9 +2,16 @@ using CentralTask.Application.AutoMapper;
 using CentralTask.Application.Identidade;
 using CentralTask.Application.Services;
 using CentralTask.Application.Services.Interfaces;
+using CentralTask.Broker.Connection;
+using CentralTask.Broker.Consumer;
+using CentralTask.Broker.Interfaces;
+using CentralTask.Broker.Producer;
 using CentralTask.Domain.Interfaces.Repositories;
 using CentralTask.Infra.Data.Context;
 using CentralTask.Infra.Data.Repositories;
+using CentralTask.Infra.Notifications.Hubs;
+using CentralTask.Infra.Notifications.Interfaces;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,17 +32,6 @@ public static class DependencyInjector
             .AddAutoMapper(typeof(AutoMapperConfig))
             .AddDbContext(configuration)
         .AddHttpClient();
-
-        return services;
-    }
-
-    public static IServiceCollection AddServicesHangfire(this IServiceCollection services, IConfiguration configuration)
-    {
-        services
-            .AddHttpContextAccessor()
-            .AddRepositories()
-            .AddAutoMapper(typeof(AutoMapperConfig))
-            .AddDbContext(configuration, serviceLifetime: ServiceLifetime.Transient);
 
         return services;
     }
@@ -63,7 +59,11 @@ public static class DependencyInjector
     private static IServiceCollection AddSharedServices(this IServiceCollection services)
     {
         services.AddScoped<IUserService, UserService>();
-
+        services.AddSingleton<IEventPublisher, EventPublisher>();
+        services.AddSingleton<IEventConsumer, EventConsumer>();
+        services.AddSingleton<IEventConnection, EventConnection>();
+        services.AddHostedService<EventConsumerBackgroundService>();
+        services.AddSingleton<IUserConnectionService, UserConnectionService>();
         return services;
     }
 

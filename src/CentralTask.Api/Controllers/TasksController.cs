@@ -19,36 +19,36 @@ public class TasksController : BaseController
         _mediator = mediator;
     }
 
-    [HttpPost("")]
-    //[Authorize]
+    [HttpPost()]
+    [Authorize]
     public async Task<IActionResult> CriarTasks([FromBody] CriarTasksCommandInput input)
     {
         return HandleResult(await _mediator.Send(input));
     }
 
-    [HttpPut("")]
-    //[Authorize]
+    [HttpPut()]
+    [Authorize]
     public async Task<IActionResult> AlterarTasks([FromBody] AlterarTasksCommandInput input)
     {
         return HandleResult(await _mediator.Send(input));
     }
 
-    [HttpDelete("")]
-    //[Authorize]
+    [HttpDelete()]
+    [Authorize]
     public async Task<IActionResult> DeletarTasks([FromBody] DeletarTasksCommandInput input)
     {
         return HandleResult(await _mediator.Send(input));
     }
 
     [HttpGet("by-id")]
-    //[Authorize]
+    [Authorize]
     public async Task<IActionResult> GetByIdTasks([FromQuery] GetByIdTasksInput input)
     {
         return HandleResult(await _mediator.Send(input));
     }
 
     [HttpGet("paginado")]
-    //[Authorize]
+    [Authorize]
     public async Task<IActionResult> GetPaginadoTasks([FromQuery] GetPaginadoTasksInput input)
     {
         return HandleResult(await _mediator.Send(input));

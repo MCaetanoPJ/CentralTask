@@ -1,4 +1,7 @@
 
+using CentralTask.Broker.Interfaces;
+using CentralTask.Core.DTO.Broker;
+using CentralTask.Core.Enums.Broker;
 using CentralTask.Core.Mediator.Commands;
 using CentralTask.Core.Notifications;
 using CentralTask.Domain.Entidades;
@@ -12,12 +15,14 @@ namespace CentralTask.Application.Commands.TasksCommands
         private readonly ITasksRepository _tasksRepository;
         private readonly IUserRepository _userRepository;
         private readonly INotifier _notifier;
+        private readonly IEventPublisher _eventPublisher;
 
-        public CriarTasksCommandHandler(ITasksRepository tasksRepository, INotifier notifier, IUserRepository userRepository)
+        public CriarTasksCommandHandler(ITasksRepository tasksRepository, INotifier notifier, IUserRepository userRepository, IEventPublisher eventPublisher)
         {
             _tasksRepository = tasksRepository;
             _notifier = notifier;
             _userRepository = userRepository;
+            _eventPublisher = eventPublisher;
         }
 
         public async Task<CriarTasksCommandResult> Handle(CriarTasksCommandInput request, CancellationToken cancellationToken)
@@ -53,6 +58,21 @@ namespace CentralTask.Application.Commands.TasksCommands
             _tasksRepository.Add(entidade);
 
             await _tasksRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+
+            var sendSuccessul = await _eventPublisher.PublishAsync(new MessageRequestModel
+            {
+                MessageType = EnumMessageTypeEvent.TaskCreated.ToString(),
+                QueueEvent = EnumMessageTypeEvent.TaskCreated.ToString(),
+                Message = $"Uma tarefa foi atribuída para {user.Nome}",
+                Reprocess = true,
+                UserId = request.UserId
+            });
+
+            if (!sendSuccessul.Sucess)
+            {
+                _notifier.Notify("Não foi possível enviar a notificação para a fila.");
+                return new();
+            }
 
             return new CriarTasksCommandResult { Id = entidade.Id };
         }

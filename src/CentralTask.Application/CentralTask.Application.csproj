@@ -15,6 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\CentralTask.Broker\CentralTask.Infra.Broker.csproj" />
 		<ProjectReference Include="..\CentralTask.Core\CentralTask.Core.csproj" />
 		<ProjectReference Include="..\CentralTask.Domain\CentralTask.Domain.csproj" />
 	</ItemGroup>
