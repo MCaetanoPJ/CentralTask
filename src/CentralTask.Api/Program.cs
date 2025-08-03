@@ -25,6 +25,4 @@ app.UseWebSockets();
 
 app.UseApiConfiguration(builder.Configuration);
 
-app.MapHub<NotificationHub>("/hubs/notifications");
-
 app.Run();

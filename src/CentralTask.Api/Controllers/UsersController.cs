@@ -33,7 +33,7 @@ public class UserController : BaseController
     }
 
     [HttpGet()]
-    //[Authorize]
+    [Authorize]
     public async Task<IActionResult> GetAllUsers([FromQuery] GetAllUserQueryInput input)
     {
         return HandleResult(await _mediator.Send(input));

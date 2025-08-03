@@ -10,7 +10,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -70,53 +72,52 @@ public class RealizarLoginCommandHandler : ICommandHandler<RealizarLoginCommandI
         return await GerarReponseComToken(user);
     }
 
-    public async Task<RealizarLoginCommandResult> GerarReponseComToken(User User)
+    public async Task<RealizarLoginCommandResult> GerarReponseComToken(User user)
     {
-        var claims = new Claim[]
-               {
-                    new Claim("role", User.NivelAcesso.ToString()),
-                    new Claim(ClaimTypes.NameIdentifier, User.Id.ToString())
-               };
-
-        var encodedToken = CriarToken(claims, User.NivelAcesso);
+        var encodedToken = CriarToken(user);
         var responses = new RealizarLoginCommandResult
         {
             AccessToken = encodedToken,
             ExpiresInSeconds = TimeSpan.FromHours(_jwtSettings.ExpiracaoHoras).TotalSeconds,
-            Nivel = ((int)User.NivelAcesso),
-            Email = User.Email,
-            Nome = User.Nome,
-            UserId = User.Id,
+            Nivel = ((int)user.NivelAcesso),
+            Email = user.Email,
+            Nome = user.Nome,
+            UserId = user.Id,
         };
 
         return responses;
     }
 
-    private string CriarToken(IEnumerable<Claim> claims, EnumNivel nivelUser)
+    private string CriarToken(User user)
     {
-        var tempoDeExpiracaoDoToken = ObterTempoDeExpiracao(nivelUser);
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
+
+        var claims = new List<Claim>
+        {
+            new Claim(Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Sub, user.Id.ToString()), // Subject
+            new Claim(ClaimTypes.Name, user.Nome),
+            new Claim(ClaimTypes.Role, user.NivelAcesso.ToString()),
+            new Claim(Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) // ID único do token
+        };
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(claims),
+            Expires = ObterTempoDeExpiracao(user.NivelAcesso),
+            SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256),
+            NotBefore = DateTime.UtcNow,
+        };
 
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_jwtSettings.SecretKey!);
-        var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
-        {
-            Issuer = "CentralTask",
-            Audience = "https://localhost.com",
-            Subject = new ClaimsIdentity(claims),
-            Expires = tempoDeExpiracaoDoToken,
-            SigningCredentials =
-                new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        });
-
-        var encodedToken = tokenHandler.WriteToken(token);
-        return encodedToken;
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
     }
 
     private static DateTime? ObterTempoDeExpiracao(EnumNivel nivelAcesso)
     {
         return nivelAcesso switch
         {
-            EnumNivel.Admin => DateTime.Now.AddYears(1),
+            EnumNivel.Admin => DateTime.Now.AddHours(5),
 
             _ => throw new NotImplementedException(),
         };

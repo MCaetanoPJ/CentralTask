@@ -5,6 +5,7 @@ using CentralTask.Core.Middlewares;
 using CentralTask.Core.Settings;
 using CentralTask.DI;
 using CentralTask.Infra.Data.Context;
+using CentralTask.Infra.Notifications.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -80,10 +81,7 @@ public static class ApiExtensions
 
         app.UseAuthorization();
 
-        app.UseCors(x => x
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+        app.UseCors("AllowSignalR");
 
         var configSwaggerSection = configuration.GetSection("ConfigSwagger");
         var configSwagger = configSwaggerSection.Get<ConfigSwagger>();
@@ -96,6 +94,7 @@ public static class ApiExtensions
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
+            endpoints.MapHub<NotificationHub>("/hubs/notifications").RequireAuthorization();
         });
 
         return app;

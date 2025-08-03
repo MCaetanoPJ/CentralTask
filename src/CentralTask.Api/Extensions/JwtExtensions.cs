@@ -2,6 +2,7 @@ using CentralTask.Core.AppSettingsConfigurations;
 using CentralTask.Core.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Text;
@@ -26,24 +27,30 @@ public static class JwtExtensions
                 ValidateAudience = false,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.SecretKey!)),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.SecretKey)),
                 ClockSkew = TimeSpan.Zero
             };
 
-            //x.Events = new JwtBearerEvents
-            //{
-            //    OnMessageReceived = context =>
-            //    {
-            //        var accessToken = context.Request.Query["access_token"];
+            x.Events = new JwtBearerEvents
+            {
+                OnAuthenticationFailed = context =>
+                {
+                    Console.WriteLine($"Erro de autenticação: {context.Exception.Message}");
+                    return Task.CompletedTask;
+                },
 
-            //        var path = context.HttpContext.Request.Path;
-            //        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs/notifications"))
-            //        {
-            //            context.Token = accessToken;
-            //        }
-            //        return Task.CompletedTask;
-            //    }
-            //};
+                //OnMessageReceived = context =>
+                //{
+                //    var accessToken = context.Request.Query["access_token"];
+
+                //    var path = context.HttpContext.Request.Path;
+                //    if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs/notifications"))
+                //    {
+                //        context.Token = accessToken;
+                //    }
+                //    return Task.CompletedTask;
+                //}
+            };
         });
 
         return services;
