@@ -22,26 +22,28 @@ public static class JwtExtensions
             x.SaveToken = true;
             x.TokenValidationParameters = new TokenValidationParameters
             {
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.SecretKey!)),
-                ValidateIssuer = false,
-                ValidateAudience = false
+                ClockSkew = TimeSpan.Zero
             };
 
-            x.Events = new JwtBearerEvents
-            {
-                OnMessageReceived = context =>
-                {
-                    var accessToken = context.Request.Query["access_token"];
+            //x.Events = new JwtBearerEvents
+            //{
+            //    OnMessageReceived = context =>
+            //    {
+            //        var accessToken = context.Request.Query["access_token"];
 
-                    var path = context.HttpContext.Request.Path;
-                    if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs/notifications"))
-                    {
-                        context.Token = accessToken;
-                    }
-                    return Task.CompletedTask;
-                }
-            };
+            //        var path = context.HttpContext.Request.Path;
+            //        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs/notifications"))
+            //        {
+            //            context.Token = accessToken;
+            //        }
+            //        return Task.CompletedTask;
+            //    }
+            //};
         });
 
         return services;

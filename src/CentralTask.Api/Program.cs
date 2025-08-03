@@ -14,14 +14,6 @@ Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
     .CreateLogger();
 
-// Controllers com Newtonsoft
-builder.Services
-    .AddControllers()
-    .AddNewtonsoftJson(x =>
-    {
-        x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-    });
-
 // Configuração padrão da API
 builder.Services.AddApiServicesConfiguration(builder.Configuration);
 
@@ -32,8 +24,6 @@ var app = builder.Build();
 app.UseWebSockets();
 
 app.UseApiConfiguration(builder.Configuration);
-
-
 
 app.MapHub<NotificationHub>("/hubs/notifications");
 

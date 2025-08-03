@@ -6,6 +6,7 @@ using CentralTask.Core.Settings;
 using CentralTask.DI;
 using CentralTask.Infra.Data.Context;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Serilog;
 
@@ -17,7 +18,7 @@ public static class ApiExtensions
     {
         services.AddControllers().AddNewtonsoftJson(opt =>
         {
-            opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             opt.SerializerSettings.Converters.Add(new StringEnumConverter());
         });
 
@@ -36,6 +37,24 @@ public static class ApiExtensions
 
         services.Configure<JwtSettings>(jwtSettingsSection);
         services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
+
+        services
+            .AddControllers()
+            .AddNewtonsoftJson(x =>
+            {
+                x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
+
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowSignalR", policy =>
+            {
+                policy.WithOrigins("http://localhost:3000")
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowCredentials();
+            });
+        });
 
         services.AddLogging(logging => logging.AddSerilog());
 
