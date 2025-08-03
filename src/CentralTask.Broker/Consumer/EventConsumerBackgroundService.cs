@@ -51,18 +51,18 @@ namespace CentralTask.Broker.Consumer
         }
         private async Task ExecuteQueueTaskCreatedAsync(MessageRequestModel message)
         {
-            if (message.Message is not null && message.Message is string userId)
+            if (message.Message is not null)
             {
-                await _hubContext.Clients.User(userId)
+                await _hubContext.Clients.User(message.UserId.ToString())
                     .SendAsync(EnumNotificationSignalR.NotificationTaskCreated.ToString(), new { Type = EnumMessageTypeEvent.TaskCreated.ToString(), Data = message });
             }
         }
 
         private async Task ExecuteQueueTaskUpdatedAsync(MessageRequestModel message)
         {
-            if (message.Message is not null && message.Message is string userId)
+            if (message.Message is not null)
             {
-                await _hubContext.Clients.User(userId)
+                await _hubContext.Clients.User(message.UserId.ToString())
                     .SendAsync(EnumNotificationSignalR.NotificationTaskUpdated.ToString(), new { Type = EnumMessageTypeEvent.TaskUpdated.ToString(), Data = message });
             }
         }

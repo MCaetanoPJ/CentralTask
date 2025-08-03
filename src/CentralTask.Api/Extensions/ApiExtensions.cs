@@ -75,13 +75,13 @@ public static class ApiExtensions
 
         app.UseRouting();
 
+        app.UseCors("AllowSignalR");
+
         app.UseHttpsRedirection();
 
         app.UseAuthentication();
 
         app.UseAuthorization();
-
-        app.UseCors("AllowSignalR");
 
         var configSwaggerSection = configuration.GetSection("ConfigSwagger");
         var configSwagger = configSwaggerSection.Get<ConfigSwagger>();
