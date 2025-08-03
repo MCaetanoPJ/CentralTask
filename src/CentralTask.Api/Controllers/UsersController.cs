@@ -20,7 +20,7 @@ public class UserController : BaseController
         _mediator = mediator;
     }
 
-    [HttpPost()]
+    [HttpPost("createRandom")]
     public async Task<IActionResult> CriarUser([FromBody] CriarUserCommandInput input)
     {
         return HandleResult(await _mediator.Send(input));

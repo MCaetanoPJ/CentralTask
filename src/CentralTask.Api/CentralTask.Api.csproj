@@ -30,6 +30,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\CentralTask.Application\CentralTask.Application.csproj" />
+		<ProjectReference Include="..\CentralTask.Broker\CentralTask.Broker.csproj" />
 		<ProjectReference Include="..\CentralTask.DI\CentralTask.DI.csproj" />
 		<ProjectReference Include="..\CentralTask.Infra.Data\CentralTask.Infra.Data.csproj" />
 	</ItemGroup>

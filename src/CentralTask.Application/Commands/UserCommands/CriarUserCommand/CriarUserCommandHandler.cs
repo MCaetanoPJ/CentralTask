@@ -4,9 +4,7 @@ using CentralTask.Domain.Entidades;
 using CentralTask.Domain.Enums;
 using CentralTask.Domain.Interfaces.Repositories;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Security.Claims;
 
 namespace CentralTask.Application.Commands.UserCommands.CriarUserCommand;
 
@@ -31,39 +29,44 @@ public class CriarUserCommandHandler : ICommandHandler<CriarUserCommandInput, Cr
 
     public async Task<CriarUserCommandResult> Handle(CriarUserCommandInput request, CancellationToken cancellationToken)
     {
-        if (await _userManager.Users.AnyAsync(c => c.Email == request.Email))
+        if (request.Amount <= 0)
         {
-            _notifier.Notify("Esse e-mail já está sendo utilizado por outro usuário.");
+            _notifier.Notify("A quantidade de usuários a serem criados deve ser maior que zero.");
             return new CriarUserCommandResult();
         }
 
-        _logger.LogInformation("Iniciando criação do User {EmailUser}", request!.Email);
-
-        var User = new User(request.Nome, request.Email);
-
-        var result = await _userManager.CreateAsync(User, request.Senha);
-
-        if (!result.Succeeded)
+        if (string.IsNullOrEmpty(request.UserNameMask))
         {
-            foreach (var error in result.Errors) _notifier.Notify(error.Description);
+            _notifier.Notify("Obrigatório informar a máscara para o nome dos usuários a serem criados.");
             return new CriarUserCommandResult();
         }
 
-        var levelAccess = EnumNivel.Admin.ToString();
-        var rolesCurrentToUser = await _userManager.GetRolesAsync(User);
-        if (!await _userManager.IsInRoleAsync(User, levelAccess))
+        for (int position = 0; position < request.Amount; position++)
         {
-            var newRule = new Claim(ClaimTypes.Role, levelAccess);
+            var name = request.UserNameMask.Replace("{{random}}", Guid.NewGuid().ToString());
+
+            var user = new User(name, email: $"{name}@gmail.com");
+            var result = await _userManager.CreateAsync(user, "123456");
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    continue;
+                }
+            }
+
+            var levelAccess = EnumNivel.Admin.ToString();
+            var rolesCurrentToUser = await _userManager.GetRolesAsync(user);
+            var resultRole = await _userManager.AddToRoleAsync(user, levelAccess);
+            if (!resultRole.Succeeded)
+            {
+                foreach (var error in resultRole.Errors)
+                {
+                    continue;
+                }
+            }
         }
 
-        var resultRole = await _userManager.AddToRoleAsync(User, levelAccess);
-
-        if (!resultRole.Succeeded)
-        {
-            foreach (var error in resultRole.Errors) _notifier.Notify(error.Description);
-            return new CriarUserCommandResult();
-        }
-
-        return new CriarUserCommandResult { Id = User.Id };
+        return new();
     }
 }

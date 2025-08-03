@@ -1,75 +1,78 @@
-//using CentralTask.Broker.Interfaces;
-//using CentralTask.Core.DTO.Worker;
-//using Microsoft.Extensions.Logging;
-//using Microsoft.Extensions.Options;
-//using RabbitMQ.Client;
-//using System.Text;
-//using System.Text.Json;
+﻿using CentralTask.Core.DTO.Worker;
+using CentralTask.Core.RepositoryBase;
+using Microsoft.Extensions.Logging;
+using RabbitMQ.Client;
+using System.Text;
+using System.Text.Json;
 
-//namespace CentralTask.Broker;
+namespace CentralTask.Broker
+{
+    public class EventPublisher
+    {
+        private readonly EventConnection _connection;
+        private readonly ILogger<EventPublisher> _logger;
+        private const int MaxRetries = 3;
 
-//public class EventPublisher : IEventPublisher
-//{
-//    private readonly ILogger<EventPublisher> _logger;
-//    private readonly ConnectionFactory _factory;
+        public EventPublisher(EventConnection connection, ILogger<EventPublisher> logger)
+        {
+            _connection = connection;
+            _logger = logger;
+        }
 
-//    public EventPublisher(ILogger<EventPublisher> logger,
-//        IOptions<MessageBrokerConfig> messageBrokerConfig)
-//    {
-//        _logger = logger;
+        public async Task<ValidateResult> PublishAsync(MessageRequestModel queueRequest)
+        {
+            var result = new ValidateResult();
 
-//        _factory = new ConnectionFactory()
-//        {
-//            HostName = messageBrokerConfig.Value.Host,
-//            Port = messageBrokerConfig.Value.Port,
-//            UserName = messageBrokerConfig.Value.User,
-//            Password = messageBrokerConfig.Value.Password
-//        };
+            for (int attempt = 1; attempt <= MaxRetries; attempt++)
+            {
+                try
+                {
+                    var channel = await _connection.CreateChannelAsync();
 
-//        if (!string.IsNullOrEmpty(messageBrokerConfig.Value.Virtualhost))
-//        {
-//            _factory.VirtualHost = messageBrokerConfig.Value.Virtualhost;
-//        }
-//    }
+                    await channel.QueueDeclareAsync(
+                        queue: queueRequest.QueueEvent.ToString(),
+                        durable: true,
+                        exclusive: false,
+                        autoDelete: false,
+                        arguments: null
+                    );
 
-//    public async Task SendAsync(MessageRequestModel queueRequest)
-//    {
-//        using (var connection = _factory.CreateConnectionAsync())
-//        {
-//            using (var channel = connection.CreateModel())
-//            {
-//                await SendAsync(channel, queueRequest);
-//            }
-//        }
-//    }
+                    var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(queueRequest));
 
-//    private async Task SendAsync(IModel channel, MessageRequestModel queueRequest)
-//    {
-//        channel.QueueDeclare(queue: queueRequest.QueueEvent.ToString(),
-//                                durable: true,
-//                                exclusive: false,
-//                                autoDelete: false,
-//                                arguments: null);
+                    var props = new BasicProperties
+                    {
+                        Persistent = true
+                    };
 
-//        var messageQueue = new MessageEventModel()
-//        {
-//            Id = Guid.NewGuid(),
-//            CreatedAt = DateTime.Now,
-//            Message = queueRequest.Message,
-//            MessageType = queueRequest.MessageType,
-//            Reprocess = queueRequest.Reprocess
-//        };
+                    await channel.BasicPublishAsync(
+                        exchange: "",
+                        routingKey: queueRequest.QueueEvent.ToString(),
+                        mandatory: false,
+                        basicProperties: props,
+                        body: body
+                    );
 
-//        var messageData = JsonSerializer.Serialize(messageQueue);
+                    _logger.LogInformation($"[RabbitMQ] Mensagem publicada na fila {queueRequest.QueueEvent}: {queueRequest.Message}");
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning($"[RabbitMQ] Tentativa {attempt}/{MaxRetries} falhou: {ex.Message}");
 
-//        var body = Encoding.UTF8.GetBytes(messageData);
+                    if (attempt == MaxRetries)
+                    {
+                        result.AddMessage($"Falha ao publicar mensagem após {MaxRetries} tentativas: {ex.Message}");
+                        return result;
+                    }
 
-//        channel.BasicPublish(exchange: "",
-//                                routingKey: queueRequest.QueueEvent.ToString(),
-//                                basicProperties: null,
-//                                body: body);
+                    // Backoff exponencial
+                    var delay = TimeSpan.FromSeconds(Math.Pow(2, attempt));
+                    _logger.LogInformation($"[RabbitMQ] Reagendando publicação em {delay.TotalSeconds} segundos...");
+                    await Task.Delay(delay);
+                }
+            }
 
-//        _logger.LogInformation($"Message send: {queueRequest.QueueEvent.ToString()}/{queueRequest.Message}");
-//    }
-
-//}
+            return result;
+        }
+    }
+}
