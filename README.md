@@ -120,9 +120,3 @@ A aplicação utiliza arquitetura CQRS para separar as operações de leitura e 
 
 - **Docker**:  
   - Cada componente (API, RabbitMQ, PostgreSQL) roda em containers isolados, facilitando desenvolvimento, testes e implantação.
-
----
-
-```bash
-git clone https://github.com/MCaetanoPJ/CentralTask.git
-cd CentralTask
